@@ -16,7 +16,17 @@ dependencies:
 
 
 # database dependencies
-
+- postgresql
+- psycopg2
+- sqlalchemy
+- geoalchemy2
 
 # plotting dependencies
 
+# external services dependencies
+
+
+# django/plugin dependencies
+
+
+# tests dependencies

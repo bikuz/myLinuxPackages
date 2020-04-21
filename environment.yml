@@ -17,6 +17,7 @@ dependencies:
 
 # database dependencies
 - postgresql
+- postgresql-contrib
 - psycopg2
 - sqlalchemy
 - geoalchemy2

@@ -7,4 +7,5 @@
     wget https://raw.githubusercontent.com/bikuz/myLinuxPackages/master/install/install_myApps.sh
     bash install_myApps.sh
     
-    
+## 2) install packages including geoserver
+    bash install_myApps.sh --install-geoserver

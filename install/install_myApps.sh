@@ -166,7 +166,7 @@ else
 
 	
 	sudo chown $USER /etc/init.d
-	cp ${MYAPP_HOME}/myApps/postgresql_init.d/pgsql_service /etc/init.d
+	cp ${MYAPP_HOME}/myApps/postgresql_init.d/pgsql_service /etc/init.d/pgsql_service
 	
 	
 	
@@ -240,7 +240,7 @@ if [ -n "${INSTALL_GEOSERVER}" ]; then
 	echo "JAVA_OPTS=" >> ${GEO_CONFIG}
 	
 	sudo chown $USER /etc/init.d
-	cp ${MYAPP_HOME}/myApps/geoserver_init.d/geoserver /etc/init.d
+	cp ${MYAPP_HOME}/myApps/geoserver_init.d/geoserver /etc/init.d/geoserver
 
 	
 

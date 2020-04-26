@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ ! -x "$(which git)" ]; then
-    echo "not found"
-else
-    echo "found"
-fi
-
 DEFAULT_PORT=56453
 
 declare -A PORTLIST
@@ -13,8 +7,7 @@ declare -A PORTLIST
 myapps(){
 	case $1 in
 		dbstart)
-			sudo systemctl start pgsql_service
-			
+			sudo systemctl start pgsql_service			
 			#pg_ctl -D ~/.myApps/psql -l ~/.myApps/psql/serverlog start
 			;;
 		dbstop)

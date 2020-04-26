@@ -144,6 +144,14 @@ else
 	#		http://devopspy.com/linux/allow-remote-connections-postgresql/
 
 	# postgresql linux init.d script -> https://www.manniwood.com/2005_01_01/postgresql_startup_script_for_etcinitd.html
+	# rename postgresql.conf & pg_hba.conf
+	
+	mv ${MYAPP_HOME}/${DB_DIR}/postgresql.conf ${MYAPP_HOME}/${DB_DIR}/postgresql_backup.conf
+	mv ${MYAPP_HOME}/${DB_DIR}/pg_hba.conf ${MYAPP_HOME}/${DB_DIR}/pg_hba_backup.conf
+	#copy file
+	cp ${MYAPP_HOME}/myApps/postgresql_init.d/postgresql.conf ${MYAPP_HOME}/${DB_DIR}/postgresql.conf
+	cp ${MYAPP_HOME}/myApps/postgresql_init.d/pg_hba.conf ${MYAPP_HOME}/${DB_DIR}/pg_hba.conf
+	
 
 	sudo chown $USER /etc/default
 	PG_CONFIG=/etc/default/pgsql_service
@@ -156,12 +164,10 @@ else
 	echo "POSTGRES=\$PG_INSTALL_DIR/bin/postgres" >> ${PG_CONFIG}
 	echo "PG_CTL=\$PG_INSTALL_DIR/bin/pg_ctl" >> ${PG_CONFIG}
 
-	# rename postgresql.conf & pg_hba.conf
-	mv ${MYAPP_HOME}/${DB_DIR}/postgresql.conf ${MYAPP_HOME}/${DB_DIR}/postgresql_backup.conf
-	mv ${MYAPP_HOME}/${DB_DIR}/pg_hba.conf ${MYAPP_HOME}/${DB_DIR}/pg_hba_backup.conf
-
+	
 	sudo chown $USER /etc/init.d
 	cp ${MYAPP_HOME}/myApps/postgresql_init.d/pgsql_service /etc/init.d
+	
 	sudo systemctl daemon-reload
 	sudo systemctl enable pgsql_service
 	sudo systemctl start pgsql_service

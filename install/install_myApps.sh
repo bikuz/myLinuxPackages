@@ -168,19 +168,28 @@ else
 	sudo chown $USER /etc/init.d
 	cp ${MYAPP_HOME}/myApps/postgresql_init.d/pgsql_service /etc/init.d
 	
+	
+	
+	
+	
+fi
+
+if [ -f "/etc/init.d/pgsql_service" ]; then
+	echo "Configuring postgresql ..."
+
 	sudo chmod +x /etc/init.d/pgsql_service
 
 	sudo systemctl daemon-reload
 	sudo systemctl enable pgsql_service
 	sudo systemctl start pgsql_service
 	
+	echo "PostgreSQL successfully configured at port:5432"	
 	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	echo "For Remote Connection to PostgreSQL"
 	echo "http://devopspy.com/linux/allow-remote-connections-postgresql"
 	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	echo "Steps to install pgadmin4 -> 'https://www.howtoforge.com/how-to-install-postgresql-and-pgadmin4-on-ubuntu-1804-lts'"
 	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	
 fi
 
 # INSTALL GEOSERVER
@@ -233,20 +242,12 @@ if [ -n "${INSTALL_GEOSERVER}" ]; then
 	sudo chown $USER /etc/init.d
 	cp ${MYAPP_HOME}/myApps/geoserver_init.d/geoserver /etc/init.d
 
-	sudo chmod +x /etc/init.d/geoserver
+	
 
-	sudo systemctl daemon-reload
-	sudo systemctl enable geoserver
-	sudo systemctl start geoserver
+	
 	
 	echo "GeoServer installed successfully"
-	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	echo "GeoServer Username: admin"
-	echo "Geoserver Password: geoserver"
-	echo "GeoServer PostGIS Database: geoserver"
-	echo "GeoServer PostGIS Database User: geoserver"
-	echo "GeoServer PostGIS Dababase password: pass123"
-	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	
 
 	#mv geoserver-2.17.0/* .
 	#echo "export GEOSERVER_HOME=/usr/share/geoserver" >> ~/.profile
@@ -255,6 +256,24 @@ if [ -n "${INSTALL_GEOSERVER}" ]; then
 	# GeoServer run
 	#./bin/startup.sh
 	
+fi
+
+if [ -f "/etc/init.d/geoserver" ]; then
+	echo "Configuring geoserver ..."
+
+	sudo chmod +x /etc/init.d/geoserver
+
+	sudo systemctl daemon-reload
+	sudo systemctl enable geoserver
+	sudo systemctl start geoserver
+	echo "GeoServer successfully configured at port:8080"	
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "GeoServer Username: admin"
+	echo "Geoserver Password: geoserver"
+	echo "GeoServer PostGIS Database: geoserver"
+	echo "GeoServer PostGIS Database User: geoserver"
+	echo "GeoServer PostGIS Dababase password: pass123"
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"	
 fi
 
 

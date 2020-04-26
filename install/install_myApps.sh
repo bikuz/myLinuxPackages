@@ -109,8 +109,8 @@ conda activate
 if [ ! -x "$(which git)" ]; then
 	conda install --yes git
 fi
-if [ ! -f "${MYAPP_HOME}/lib/environment.yml" ]; then
-	git clone https://github.com/bikuz/myLinuxPackages.git "${MYAPP_HOME}/lib"
+if [ ! -f "${MYAPP_HOME}/myApps/environment.yml" ]; then
+	git clone https://github.com/bikuz/myLinuxPackages.git "${MYAPP_HOME}/myApps"
 fi
 
 #create conda env and install packages
@@ -118,7 +118,7 @@ if [ "$(ls -A ${CONDA_HOME}/envs/${CONDA_ENV_NAME})" ]; then
      echo "using ${CONDA_ENV_NAME} environment"
 else
     echo "Setting up the ${CONDA_ENV_NAME} environment..."
-	conda env create -n ${CONDA_ENV_NAME} -f "${MYAPP_HOME}/lib/environment.yml"
+	conda env create -n ${CONDA_ENV_NAME} -f "${MYAPP_HOME}/myApps/environment.yml"
 fi
 
 

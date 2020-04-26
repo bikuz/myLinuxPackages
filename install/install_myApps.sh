@@ -168,6 +168,8 @@ else
 	sudo chown $USER /etc/init.d
 	cp ${MYAPP_HOME}/myApps/postgresql_init.d/pgsql_service /etc/init.d
 	
+	sudo chmod +x /etc/init.d/pgsql_service
+
 	sudo systemctl daemon-reload
 	sudo systemctl enable pgsql_service
 	sudo systemctl start pgsql_service
@@ -230,6 +232,9 @@ if [ -n "${INSTALL_GEOSERVER}" ]; then
 	
 	sudo chown $USER /etc/init.d
 	cp ${MYAPP_HOME}/myApps/geoserver_init.d/geoserver /etc/init.d
+
+	sudo chmod +x /etc/init.d/geoserver
+
 	sudo systemctl daemon-reload
 	sudo systemctl enable geoserver
 	sudo systemctl start geoserver

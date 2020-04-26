@@ -278,11 +278,13 @@ fi
 
 
 # create shortcuts
-if [ "$(ls -A ${MYAPP_HOME}/${DB_DIR})" ]; then
-	echo ""
+SHORTCUT="alias run-myapps='source ${CONDA_HOME}/etc/profile.d/conda.sh; source ${MYAPP_HOME}/myApps/lib/myApps.sh; conda activate ${CONDA_ENV_NAME}'"
+if grep -q "${SHORTCUT}" ~/${BASH_PROFILE}; then
+	echo "Shortcuts already exist."
+	. ~/${BASH_PROFILE}
 else
 	echo "# myApps Shortcuts" >> ~/${BASH_PROFILE}
-	echo "alias myapps='source ${CONDA_HOME}/etc/profile.d/conda.sh; source ${MYAPP_HOME}/myApps/lib/myApps.sh; conda activate ${CONDA_ENV_NAME}'" >> ~/${BASH_PROFILE}
+	echo ${SHORTCUT} >> ~/${BASH_PROFILE}
 	. ~/${BASH_PROFILE}
 fi
 

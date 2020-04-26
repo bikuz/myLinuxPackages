@@ -20,6 +20,7 @@ dependencies:
 - psycopg2
 - sqlalchemy
 - geoalchemy2
+- postgis
 
 # plotting dependencies
 
@@ -27,6 +28,10 @@ dependencies:
 
 
 # django/plugin dependencies
-
+- django
+- django-bootstrap3
 
 # tests dependencies
+
+# Conda to allow Python API access to Conda Install
+- conda

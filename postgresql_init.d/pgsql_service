@@ -1,0 +1,77 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          pgsql_service
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: Postgresql server
+### END INIT INFO
+
+# Author: Bikram Shakya <bishakya@icimod.org>
+
+USER=pgsql
+
+# where to find commands like su, echo, etc...
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="Postgresql daemon"
+NAME=pgsql_service
+PIDFILE=/var/run/$NAME.pid
+
+PG_INSTALL_DIR=/u99/local/pgsql-9.0
+PG_DATA_DIR="${PG_INSTALL_DIR}/data"
+PG_SERVER_LOG="$PG_DATA_DIR/serverlog"
+PG_UNIX_USER=postgres
+POSTGRES="$PG_INSTALL_DIR/bin/postgres"
+PG_CTL="$PG_INSTALL_DIR/bin/pg_ctl"
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Only start if we can find postgres and pg_ctl.
+if [ ! -x $PG_CTL ]; then
+    echo "$PG_CTL not found" 1>&2
+    exit 1
+fi
+
+if [ ! -x $POSTGRES ]; then
+    echo "$POSTGRES not found" 1>&2
+    exit 1
+fi
+
+DAEMON="$PG_CTL"
+DAEMON_START_ARGS="-D $PG_DATA_DIR -l $PG_SERVER_LOG start"
+DAEMON_STOP_ARGS="-D $PG_DATA_DIR -l $PG_SERVER_LOG stop"
+DAEMON_RESTART_ARGS="-D $PG_DATA_DIR -l $PG_SERVER_LOG restart"
+DAEMON_STATUS_ARGS="-D $PG_DATA_DIR -l $PG_SERVER_LOG status"
+
+# Load the VERBOSE setting and other rcS variables
+[ -f /etc/default/rcS ] && . /etc/default/rcS
+
+
+case "$1" in
+	start)
+		echo -n "Starting PostgreSQL:"
+		su $USER -c "$DAEMON $DAEMON_START_ARGS"
+		;;
+	stop)
+		echo -n "Stopping PostgreSQL: "
+		su $USER -c "$DAEMON $DAEMON_STOP_ARGS"
+		;;
+	status)
+		su $USER -c "$DAEMON $DAEMON_STOP_ARGS"
+		;;
+	restart|force-reload)
+		echo -n "Restarting PostgreSQL: "
+		su $USER -c "$DAEMON $DAEMON_RESTART_ARGS"
+		;;
+	
+	*)
+		#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+		echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+		exit 3
+		;;
+esac
+
+:
+

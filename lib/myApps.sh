@@ -13,13 +13,20 @@ declare -A PORTLIST
 myapps(){
 	case $1 in
 		dbstart)
-			pg_ctl -D /home/bikuz/.myApps/psql -l /home/bikuz/.myApps/psql/serverlog start
+			sudo systemctl start pgsql_service
+			
+			#pg_ctl -D ~/.myApps/psql -l ~/.myApps/psql/serverlog start
 			;;
 		dbstop)
-			pg_ctl -D /home/bikuz/.myApps/psql -l /home/bikuz/.myApps/psql/serverlog stop
+			sudo systemctl stop pgsql_service
+			#pg_ctl -D ~/.myApps/psql -l ~/.myApps/psql/serverlog stop
 			;;
 		dbrestart)
-			pg_ctl -D /home/bikuz/.myApps/psql -l /home/bikuz/.myApps/psql/serverlog restart
+			sudo systemctl restart pgsql_service
+			#pg_ctl -D ~/.myApps/psql -l ~/.myApps/psql/serverlog restart
+			;;
+		dbstatus)
+			pg_ctl -D ~/.myApps/psql -l ~/.myApps/psql/serverlog status
 			;;
 		runserver)
 			curpath="$(pwd)"

@@ -9,3 +9,6 @@
     
 ## 2) install packages including geoserver
     bash install_myApps.sh --install-geoserver
+    
+## 3) To install packages using conda, please see following url
+    https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html

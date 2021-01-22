@@ -21,21 +21,34 @@ myapps(){
 		dbstatus)
 			pg_ctl -D ~/.myApps/psql -l ~/.myApps/psql/serverlog status
 			;;
+		--dbmigrate)
+			if [ ! -z "$2" ]; then
+				__stopServer
+				python $(pwd)/manage.py makemigrations $2
+				python $(pwd)/manage.py migrate			
+			else
+				echo "--dbmigrate requires a name parameter"
+			fi
+			;;
 		runserver)
+			__stopServer
 			curpath="$(pwd)"
 			#echo $curpath/manage.py
 			#fuser 56453/tcp
-			findUniquePort $curpath
+			__findUniquePort $curpath
 			#PORTLIST[$DEFAULT_PORT]=$curpath
 			#echo ${PORTLIST[$DEFAULT_PORT]}
 			if [ -f "${curpath}/manage.py" ]; then			
 				echo "http://localhost:$DEFAULT_PORT"		
-				python manage.py runserver "localhost:$DEFAULT_PORT" & runURL $DEFAULT_PORT			
+				python manage.py runserver "localhost:$DEFAULT_PORT" & __runURL $DEFAULT_PORT			
 			else
 				echo "${curpath}/manage.py not found."
 			fi		
 			#OPEN NEW TERMINAL
 			#gnome-terminal		
+			;;
+		stopserver)			
+			__stopServer			
 			;;
 		-s|--start-project)
 			if [ ! -z "$2" ]; then
@@ -47,10 +60,23 @@ myapps(){
 				echo "please specify project name"
 			fi
 			;;
+		--add-mvc)
+			if [ ! -z "$2" ]; then
+				python $(pwd)/manage.py startapp $2
+				touch $(pwd)/$2/urls.py
+				echo "from django.urls import path" >> $(pwd)/$2/urls.py
+				echo "from . import views" >> $(pwd)/$2/urls.py
+			else
+				echo "--add-mvc requires a name parameter"
+			fi
+			;;
+		--createsuperuser)
+			python $(pwd)/manage.py createsuperuser
+			
 	esac
 }
 
-findUniquePort(){
+__findUniquePort(){
 	
 	#loop until port is available
 	while [ ! -z "$(lsof -t -i :$DEFAULT_PORT -s tcp:LISTEN)" ]
@@ -66,34 +92,7 @@ findUniquePort(){
 	PORTLIST[$DEFAULT_PORT]=$1
 }
 
-getUniquePort(){
-	#port=$((DEFAULT_PORT+0))
-	
-	
-	while [ ! -z "${PORTLIST[$DEFAULT_PORT]}" ] #item in "${PORTLIST[@]}"
-	do
-		
-		#echo ${PORTLIST[$DEFAULT_PORT]}
-		if [ "${PORTLIST[$DEFAULT_PORT]}" == "$1" ]; then
-			echo "${PORTLIST[$DEFAULT_PORT]}"
-			#if [ -x "$(fuser DEFAULT_PORT/tcp)"]; then
-				echo "kill process if exist"
-				fuser -k $DEFAULT_PORT/tcp
-			#fi	
-			break
-		else
-			#lsof -Pi :$DEFAULT_PORT -s TCP:LISTEN -t >/dev/null
-			if [ ! -z "$(lsof -t -i :$DEFAULT_PORT -s tcp:LISTEN)" ] ; then		
-				((DEFAULT_PORT++))	
-			else
-				break
-			fi		
-		fi
-	done
-	echo "PORT: $DEFAULT_PORT is available."
-}
-
-runURL(){
+__runURL(){
 	pStarted=-1
 	#echo "$pStarted"
 	while [ $pStarted -le 0 ]
@@ -111,3 +110,10 @@ runURL(){
 		
 	done
 }
+
+__stopServer(){
+	fuser -k ${DEFAULT_PORT}/tcp
+	echo "web server stopped."
+}
+
+
